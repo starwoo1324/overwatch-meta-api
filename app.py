@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from bs4 import BeautifulSoup
 from html import unescape
 import json
@@ -46,7 +46,18 @@ def blizzard_test():
 @app.route("/real-heroes")
 def real_heroes():
     try:
-        url = "https://overwatch.blizzard.com/ko-kr/rates?input=PC&map=all-maps&region=Asia&role=All&rq=1&tier=Master"
+        tier = request.args.get("tier", "Master")
+region = request.args.get("region", "Asia")
+
+url = (
+    f"https://overwatch.blizzard.com/ko-kr/rates"
+    f"?input=PC"
+    f"&map=all-maps"
+    f"&region={region}"
+    f"&role=All"
+    f"&rq=1"
+    f"&tier={tier}"
+)
 
         response = requests.get(
             url,
@@ -83,9 +94,11 @@ def real_heroes():
                 })
 
         return jsonify({
-            "count": len(heroes),
-            "heroes": heroes
-        })
+    "tier": tier,
+    "region": region,
+    "count": len(heroes),
+    "heroes": heroes
+})
 
     except Exception as e:
         return jsonify({
