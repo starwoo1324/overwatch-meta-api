@@ -67,3 +67,15 @@ def real_heroes():
             "success": False,
             "error": str(e)
         })
+
+@app.route("/html-sample")
+def html_sample():
+    url = "https://overwatch.blizzard.com/ko-kr/rates?input=PC&map=all-maps&region=Asia&role=All&rq=1&tier=Master"
+
+    response = requests.get(
+        url,
+        headers={"User-Agent": "Mozilla/5.0"},
+        timeout=20
+    )
+
+    return response.text[:5000]
