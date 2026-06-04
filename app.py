@@ -1,8 +1,9 @@
-from html import unescape
 from flask import Flask, jsonify
 from bs4 import BeautifulSoup
+from html import unescape
 import json
 import requests
+import re
 
 app = Flask(__name__)
 
@@ -55,12 +56,26 @@ def real_heroes():
             timeout=20
         )
 
-        soup = BeautifulSoup(response.text, "html.parser")
+        text = unescape(response.text)
+
+        matches = re.findall(
+            r'"name":"([^"]+)".*?"winrate":([0-9.]+).*?"pickrate":([0-9.]+)',
+            text,
+            re.DOTALL
+        )
+
+        heroes = []
+
+        for match in matches[:100]:
+            heroes.append({
+                "name": match[0],
+                "winrate": float(match[1]),
+                "pickrate": float(match[2]),
+            })
 
         return jsonify({
-            "success": True,
-            "title": soup.title.string if soup.title else "No Title",
-            "html_length": len(response.text)
+            "count": len(heroes),
+            "heroes": heroes[:20]
         })
 
     except Exception as e:
