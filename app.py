@@ -1,3 +1,4 @@
+from html import unescape
 from flask import Flask, jsonify
 from bs4 import BeautifulSoup
 import json
@@ -78,9 +79,10 @@ def html_sample():
         timeout=20
     )
 
-    text = response.text
+    text = unescape(response.text)
 
     return jsonify({
         "hero_count": text.count('"winrate"'),
-        "first_dva": text.find('"name":"D.Va"')
+        "first_dva": text.find('"name":"D.Va"'),
+        "contains_dva": '"name":"D.Va"' in text
     })
