@@ -155,13 +155,13 @@ def real_heroes():
                     "pickrate": float(match[2]),
                 })
 
-        return jsonify({
-            "tier": tier,
-            "region": region,
-            "count": len(heroes),
-            "heroes": heroes
-        })
-
+       return jsonify({
+    "tier": tier,
+    "region": region,
+    "sample": matches[:3],
+    "count": len(heroes),
+    "heroes": heroes
+})
     except Exception as e:
         return jsonify({
             "success": False,
