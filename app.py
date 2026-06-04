@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from bs4 import BeautifulSoup
 from html import unescape
 import json
@@ -6,6 +7,7 @@ import requests
 import re
 
 app = Flask(__name__)
+CORS(app)
 
 with open("heroes.json", encoding="utf-8") as f:
     heroes = json.load(f)
