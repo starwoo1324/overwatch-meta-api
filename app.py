@@ -78,4 +78,4 @@ def html_sample():
         timeout=20
     )
 
-    return response.text[:5000]
+    return f"<pre>{response.text[:10000]}</pre>"
