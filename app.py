@@ -78,4 +78,15 @@ def html_sample():
         timeout=20
     )
 
+    text = response.text
+
+    return jsonify({
+        "contains_dva": "D.Va" in text,
+        "contains_sigma": "Sigma" in text,
+        "contains_winrate": "winRate" in text,
+        "contains_pickrate": "pickRate" in text,
+        "contains_next_data": "__NEXT_DATA__" in text,
+        "html_length": len(text)
+    })
+
     return f"<pre>{response.text[:10000]}</pre>"
