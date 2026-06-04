@@ -80,9 +80,7 @@ def html_sample():
 
     text = response.text
 
-    idx = text.find("D.Va")
-
     return jsonify({
-        "index": idx,
-        "snippet": text[max(0, idx-500):idx+1000]
+        "hero_count": text.count('"winrate"'),
+        "first_dva": text.find('"name":"D.Va"')
     })
