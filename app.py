@@ -68,9 +68,13 @@ def real_heroes():
         seen = set()
 
         for match in matches:
-            hero_name = match[0]
+           for match in matches:
+    hero_name = match[0]
 
-            if hero_name not in seen:
+    if hero_name.lower() == "battlenet":
+        continue
+
+    if hero_name not in seen:
                 seen.add(hero_name)
 
                 heroes.append({
