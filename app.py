@@ -77,7 +77,7 @@ def real_heroes():
             re.DOTALL
         )
 
-                heroes = []
+        heroes = []
         seen = set()
 
         ROLE_MAP = {
