@@ -1,21 +1,10 @@
 from flask import Flask, jsonify
+import json
 
 app = Flask(__name__)
 
-heroes = [
-    {
-        "name": "시그마",
-        "role": "탱커",
-        "winRate": 52.3,
-        "pickRate": 4.2
-    },
-    {
-        "name": "주노",
-        "role": "힐러",
-        "winRate": 51.3,
-        "pickRate": 6.8
-    }
-]
+with open("heroes.json", encoding="utf-8") as f:
+    heroes = json.load(f)
 
 @app.route("/")
 def home():
