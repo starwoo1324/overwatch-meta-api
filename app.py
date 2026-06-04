@@ -40,3 +40,30 @@ def blizzard_test():
             "success": False,
             "error": str(e)
         })
+
+@app.route("/real-heroes")
+def real_heroes():
+    try:
+        url = "https://overwatch.blizzard.com/ko-kr/rates?input=PC&map=all-maps&region=Asia&role=All&rq=1&tier=Master"
+
+        response = requests.get(
+            url,
+            headers={
+                "User-Agent": "Mozilla/5.0"
+            },
+            timeout=20
+        )
+
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        return jsonify({
+            "success": True,
+            "title": soup.title.string if soup.title else "No Title",
+            "html_length": len(response.text)
+        })
+
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        })
