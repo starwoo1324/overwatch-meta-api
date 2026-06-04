@@ -80,13 +80,9 @@ def html_sample():
 
     text = response.text
 
-    return jsonify({
-        "contains_dva": "D.Va" in text,
-        "contains_sigma": "Sigma" in text,
-        "contains_winrate": "winRate" in text,
-        "contains_pickrate": "pickRate" in text,
-        "contains_next_data": "__NEXT_DATA__" in text,
-        "html_length": len(text)
-    })
+    idx = text.find("D.Va")
 
-    return f"<pre>{response.text[:10000]}</pre>"
+    return jsonify({
+        "index": idx,
+        "snippet": text[max(0, idx-500):idx+1000]
+    })
