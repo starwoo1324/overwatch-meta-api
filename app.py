@@ -64,24 +64,17 @@ def real_heroes():
             re.DOTALL
         )
 
-        valid_heroes = [
-            "D.Va", "둠피스트", "정커퀸", "라마트라", "라인하르트",
-            "로드호그", "시그마", "윈스턴", "레킹볼", "자리야",
-            "애쉬", "바스티온", "캐서디", "에코", "겐지",
-            "한조", "정크랫", "메이", "파라", "리퍼",
-            "소전", "솔저: 76", "솜브라", "시메트라", "토르비욘",
-            "트레이서", "위도우메이커", "벤처", "프레야",
-            "아나", "바티스트", "브리기테", "일리아리", "주노",
-            "키리코", "라이프위버", "루시우", "메르시", "모이라",
-            "젠야타"
-        ]
-
         heroes = []
+        seen = set()
 
         for match in matches:
-            if match[0] in valid_heroes:
+            hero_name = match[0]
+
+            if hero_name not in seen:
+                seen.add(hero_name)
+
                 heroes.append({
-                    "name": match[0],
+                    "name": hero_name,
                     "winrate": float(match[1]),
                     "pickrate": float(match[2]),
                 })
@@ -96,7 +89,6 @@ def real_heroes():
             "success": False,
             "error": str(e)
         })
-
 @app.route("/html-sample")
 def html_sample():
     url = "https://overwatch.blizzard.com/ko-kr/rates?input=PC&map=all-maps&region=Asia&role=All&rq=1&tier=Master"
