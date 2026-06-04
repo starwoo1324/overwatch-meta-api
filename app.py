@@ -47,17 +47,17 @@ def blizzard_test():
 def real_heroes():
     try:
         tier = request.args.get("tier", "Master")
-region = request.args.get("region", "Asia")
+        region = request.args.get("region", "Asia")
 
-url = (
-    f"https://overwatch.blizzard.com/ko-kr/rates"
-    f"?input=PC"
-    f"&map=all-maps"
-    f"&region={region}"
-    f"&role=All"
-    f"&rq=1"
-    f"&tier={tier}"
-)
+        url = (
+            f"https://overwatch.blizzard.com/ko-kr/rates"
+            f"?input=PC"
+            f"&map=all-maps"
+            f"&region={region}"
+            f"&role=All"
+            f"&rq=1"
+            f"&tier={tier}"
+        )
 
         response = requests.get(
             url,
@@ -94,11 +94,11 @@ url = (
                 })
 
         return jsonify({
-    "tier": tier,
-    "region": region,
-    "count": len(heroes),
-    "heroes": heroes
-})
+            "tier": tier,
+            "region": region,
+            "count": len(heroes),
+            "heroes": heroes
+        })
 
     except Exception as e:
         return jsonify({
