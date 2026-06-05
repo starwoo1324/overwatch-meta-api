@@ -155,12 +155,11 @@ def real_heroes():
                 })
 
        return jsonify({
-    "tier": tier,
-    "region": region,
-    "sample": matches[:3],
-    "count": len(heroes),
-    "heroes": heroes
-})
+            "tier": tier,
+            "region": region,
+            "count": len(heroes),
+            "heroes": heroes
+        })
     except Exception as e:
         return jsonify({
             "success": False,
