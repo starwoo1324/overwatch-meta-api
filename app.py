@@ -154,7 +154,7 @@ def real_heroes():
                     "pickrate": float(match[2]),
                 })
 
-       return jsonify({
+        return jsonify({
             "tier": tier,
             "region": region,
             "count": len(heroes),
