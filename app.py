@@ -72,9 +72,8 @@ def real_heroes():
         text = unescape(response.text)
 
         matches = re.findall(
-            r'"name":"([^"]+)".*?"winrate":([0-9.]+).*?"pickrate":([0-9.]+)',
-            text,
-            re.DOTALL
+            r'"name":"([^"]+)","winrate":([0-9.]+),"pickrate":([0-9.]+)',
+            text
         )
         index = text.find('"name":"D.Va"')
 
