@@ -1,14 +1,18 @@
-import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from bs4 import BeautifulSoup
 from html import unescape
 import json
+import os
 import requests
 import re
+import time
 
 app = Flask(__name__)
 CORS(app)
+
+CACHE_TTL_SECONDS = int(os.environ.get("CACHE_TTL_SECONDS", "300"))
+_rates_cache = {}
 
 try:
     with open("heroes.json", encoding="utf-8") as f:
@@ -176,6 +180,12 @@ def to_blizzard_map_slug(map_name):
 
 
 def fetch_rates(tier, region, map_slug):
+    cache_key = (tier, region, map_slug)
+    cached = _rates_cache.get(cache_key)
+    now = time.time()
+    if cached and now - cached["stored_at"] < CACHE_TTL_SECONDS:
+        return cached["text"]
+
     url = "https://overwatch.blizzard.com/ko-kr/rates"
     response = requests.get(
         url,
@@ -191,7 +201,9 @@ def fetch_rates(tier, region, map_slug):
         timeout=20,
     )
     response.raise_for_status()
-    return unescape(response.text)
+    text = unescape(response.text)
+    _rates_cache[cache_key] = {"stored_at": now, "text": text}
+    return text
 
 
 def parse_heroes(text, tier, map_name):
@@ -233,6 +245,11 @@ def parse_heroes(text, tier, map_name):
 @app.route("/")
 def home():
     return "Overwatch Meta API Running"
+
+
+@app.route("/health")
+def health():
+    return jsonify({"ok": True})
 
 
 @app.route("/heroes")
@@ -301,4 +318,5 @@ def html_sample():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "5000"))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    debug = os.environ.get("FLASK_DEBUG", "0") == "1"
+    app.run(host="0.0.0.0", port=port, debug=debug)
